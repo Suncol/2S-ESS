@@ -1,0 +1,9 @@
+&PLANET_CONFIG
+  planet_name = 'Venus'
+  planet_radius_km = 6051.8
+  planet_radius_min_km = 6040.0
+  planet_radius_max_km = 6060.0
+  has_oceans = .false.
+  salinity_reference_ppt = 0.0
+  refractive_correction = 0.0
+/

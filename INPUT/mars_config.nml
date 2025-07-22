@@ -1,0 +1,9 @@
+&PLANET_CONFIG
+  planet_name = 'Mars',
+  planet_radius_km = 3389.5d0,
+  planet_radius_min_km = 3380.0d0,
+  planet_radius_max_km = 3400.0d0,
+  has_oceans = F,
+  salinity_reference_ppt = 0.0d0,
+  refractive_correction = 0.0d0
+/

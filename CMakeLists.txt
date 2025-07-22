@@ -30,6 +30,14 @@ endif()
 
 
 #=====================================================
+# Planet configuration modules
+#=====================================================
+set(PLANET_CONFIG_SOURCES
+    sourcecode/planet_config_mod.f90
+    sourcecode/planet_config_io.f90
+)
+
+#=====================================================
 # twostr
 #=====================================================
 file(GLOB REG_2S_SRC sourcecode/2stream_2p4_feb15/*.f90)
@@ -74,8 +82,8 @@ file(GLOB OPT_FO_SRC sourcecode/FO_1p4_optimized/*.f90)
 #=====================================================
 # twostr library (static)
 #=====================================================
-add_library(TWOSTR STATIC ${REG_2S_SRC})
-add_library(TWOSTR_OPT STATIC ${SOURCES_2S_MASTER})
+add_library(TWOSTR STATIC ${REG_2S_SRC} ${PLANET_CONFIG_SOURCES})
+add_library(TWOSTR_OPT STATIC ${SOURCES_2S_MASTER} ${PLANET_CONFIG_SOURCES})
 
 install(
   TARGETS TWOSTR
@@ -123,6 +131,24 @@ add_executable(${EXE_OPT} TEST/test_opt.f90)
 target_link_libraries(${EXE_OPT} TWOSTR_OPT ESS_OPT)
 install(TARGETS ${EXE_OPT} RUNTIME DESTINATION bin)
 
+# Planetary configuration test
+set(EXE_PLANET planettest)
+add_executable(${EXE_PLANET} TEST/test_planetary_config.f90)
+target_link_libraries(${EXE_PLANET} TWOSTR ESS)
+install(TARGETS ${EXE_PLANET} RUNTIME DESTINATION bin)
+
+# Earth namelist test
+set(EXE_EARTH earthtest)
+add_executable(${EXE_EARTH} TEST/test_earth_namelist.f90)
+target_link_libraries(${EXE_EARTH} TWOSTR ESS)
+install(TARGETS ${EXE_EARTH} RUNTIME DESTINATION bin)
+
+# Mars namelist test
+set(EXE_MARS marstest)
+add_executable(${EXE_MARS} TEST/test_mars_namelist.f90)
+target_link_libraries(${EXE_MARS} TWOSTR ESS)
+install(TARGETS ${EXE_MARS} RUNTIME DESTINATION bin)
+
 
 #====================================================
 # Add test
@@ -150,3 +176,27 @@ add_test(
   COMMAND numdiff -S -r 1e-14 ${CMAKE_SOURCE_DIR}/TEST/expected_test_results.dat test_opt_output.dat 
 )
 set_tests_properties("optimized output" PROPERTIES LABELS "test;opt")
+
+add_test(
+  NAME "planetary config"
+  COMMAND $<TARGET_FILE:${EXE_PLANET}>
+)
+set_tests_properties("planetary config" PROPERTIES LABELS "test;planet")
+
+add_test(
+  NAME "earth namelist"
+  COMMAND $<TARGET_FILE:${EXE_EARTH}>
+)
+set_tests_properties("earth namelist" PROPERTIES LABELS "test;earth")
+
+add_test(
+  NAME "mars namelist"
+  COMMAND $<TARGET_FILE:${EXE_MARS}>
+)
+set_tests_properties("mars namelist" PROPERTIES LABELS "test;mars")
+
+add_test(
+  NAME "earth output"
+  COMMAND numdiff -S -r 1e-12 ${CMAKE_SOURCE_DIR}/TEST/expected_test_results.dat test_earth_namelist_output.dat 
+)
+set_tests_properties("earth output" PROPERTIES LABELS "test;earth;compare")

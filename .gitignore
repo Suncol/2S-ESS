@@ -1,20 +1,43 @@
-# Object and module interface files
+# Fortran compilation artifacts
 *.o
 *.mod
+*.smod
 
 # Compiled library files
 *.a
 *.so
+*.lib
 
-# TEST compilation folder
-# TEST/mod/
-# TEST/mod_opt/
-
-# generated test executables
+# Fortran executables
 *.exe
-*.dat
+regtest
+opttest
 
-#Exclude testing files
+# Build directories
+build/
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+*.cmake
+Testing/
+CTestTestfile.cmake
+
+# TEST compilation artifacts
+TEST/mod/
+TEST/mod_opt/
+TEST/*.o
+TEST/*.mod
+TEST/regtest
+TEST/opttest
+
+# Generated output files (except reference results)
+*.dat
+*.txt
+*.out
+*.log
+
+# Keep reference test results
 !TEST/expected_test_results.dat
 
 # macOS Files
@@ -24,14 +47,16 @@
 .deps/
 .dirstamp
 
-# various
+# Documentation artifacts (temporary)
+done.md
+plan.md
+CLAUDE.md
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
 *~
-
-# tags file
 tags
-
-# swap files (vim backups)
-.*.swp
 
 # ------ Python Project defaults ------
 # Byte-compiled / optimized / DLL files

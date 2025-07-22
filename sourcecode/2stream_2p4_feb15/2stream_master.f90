@@ -97,6 +97,10 @@ SUBROUTINE TWOSTREAM_MASTER &
           STATUS_INPUTCHECK, C_NMESSAGES, C_MESSAGES, C_ACTIONS,          & ! Exception handling
           STATUS_EXECUTION,  E_MESSAGE, E_TRACE_1, E_TRACE_2,             & ! Exception handling
           geom_timer )             
+
+!  Use planetary configuration module
+      use planet_config_mod, only: set_earth_config
+
       implicit none
 
 !  precision and parameters
@@ -486,6 +490,9 @@ SUBROUTINE TWOSTREAM_MASTER &
       real(kind=sp)   ::  timer1, timer2
 !  Initialize some variables
 !  -------------------------
+
+!  Initialize planetary configuration (Earth by default)
+      call set_earth_config()
 
 !  Input check
 

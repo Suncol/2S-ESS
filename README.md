@@ -25,6 +25,15 @@ layer height = 1 km (TOA altitude = 114 km)
 
 For other use cases, the user can contact the author at vijay.natraj@jpl.nasa.gov.
 
+## Documentation Index
+
+📖 **[Complete Documentation Index](docs/PROJECT_INDEX.md)** - Comprehensive navigation for all project documentation
+
+### Quick Links
+- 🚀 **[Build Guide](docs/BUILD_GUIDE.md)** - Complete build and development instructions
+- 📋 **[API Reference](docs/API_REFERENCE.md)** - Detailed API documentation  
+- 📊 **[Technical Documentation](docs/2STREAM_v2.4_Technical_Documentation.md)** - In-depth technical details
+
 ## Compile and run tests
 
 The following will create two executables, *regtest* and *opttest*, which are used to run the regular and optimized code, respectively. Running `ctest` will test the generated output against the expected results in *TEST/expected_test_results.dat*.

@@ -1,0 +1,9 @@
+&PLANET_CONFIG
+  planet_name = 'Earth',
+  planet_radius_km = 6371.0d0,
+  planet_radius_min_km = 6320.0d0,
+  planet_radius_max_km = 6420.0d0,
+  has_oceans = T,
+  salinity_reference_ppt = 34.3d0,
+  refractive_correction = 0.006d0
+/
