@@ -70,6 +70,7 @@ USE twostream_brdf_supplement_solar_obs_m
 USE twostream_sleave_supplement_m
 USE twostream_geometry_m
 USE twostream_geometry_solar_obs_m
+use planet_config_mod, only: get_planet_config, planet_config_type
 
 
       PRIVATE
@@ -731,17 +732,29 @@ SUBROUTINE TWOSTREAM_CHECK_INPUTS_BASIC_SOLAR_OBS &
         DO_POSTPROCESSING = .TRUE.
       ENDIF
 
-!  Check Earth radius (Chapman function only)
-!  ---WARNING. Default value of 6371.0 will be set
+
+!  Check earth radius (Chapman function only)
+!    ---WARNING. Default value of 6371.0 will be set
 
       IF ( .NOT. DO_PLANE_PARALLEL ) THEN
-        IF ( EARTH_RADIUS .LT. 6320.0D0 .OR. EARTH_RADIUS .GT. 6420.0D0 ) THEN
-          NM = NM + 1
-          MESSAGE(NM)= 'Bad input: Earth radius outside 6320-6420 km'
-          ACTION(NM) = 'Warning: default value of 6371.0 km was set'
-          EARTH_RADIUS = 6371.0D0
-        ENDIF
+        block
+          type(planet_config_type) :: planet_cfg
+          planet_cfg = get_planet_config()
+          
+          IF ( EARTH_RADIUS.LT.planet_cfg%radius_min_km .OR. &
+               EARTH_RADIUS.GT.planet_cfg%radius_max_km ) THEN
+            NM = NM + 1
+            write(MESSAGE(NM),'(A,A,A,F7.1,A,F7.1,A)') &
+              'Bad input: ', trim(planet_cfg%name), &
+              ' radius outside ', planet_cfg%radius_min_km, &
+              '-', planet_cfg%radius_max_km, ' km'
+            write(ACTION(NM),'(A,F7.1,A)') &
+              'Warning: default value of ', planet_cfg%radius_km, ' km was set'
+            EARTH_RADIUS = planet_cfg%radius_km
+          ENDIF
+        end block
       ENDIF
+
 
 !  Check solar zenith angle input
 

@@ -74,6 +74,8 @@ module twostream_sleave_routines_m
 !  get_fluorescence_755 Routines taken straight from Chris O'dell code
 !      Compiled here by R. Spurr, 12 July 2012
 
+   use planet_config_mod, only: get_planet_config, planet_config_type
+
 public
 
 contains
@@ -149,10 +151,21 @@ subroutine indwat(wl,xsal,nr,ni)
 ! Sverdrup H.V. et al., The Oceans (Prentice-Hall, Inc., Englewood Cliffs,
 !        N.J., 1942, p 173.
 
-        nrc=0.006
-        nic=0.000
-        nr=nr+nrc*(xsal/34.3)
-        ni=ni+nic*(xsal/34.3)
+        block
+          type(planet_config_type) :: planet_cfg
+          planet_cfg = get_planet_config()
+          
+          if (planet_cfg%has_oceans) then
+            nrc = planet_cfg%refractive_correction
+            nic = 0.000
+            nr = nr + nrc*(xsal/planet_cfg%salinity_reference_ppt)
+            ni = ni + nic*(xsal/planet_cfg%salinity_reference_ppt)
+          else
+            ! No ocean correction for non-oceanic planets
+            nrc = 0.000
+            nic = 0.000
+          endif
+        end block
         return
 end subroutine indwat
 

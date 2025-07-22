@@ -149,6 +149,12 @@ add_executable(${EXE_MARS} TEST/test_mars_namelist.f90)
 target_link_libraries(${EXE_MARS} TWOSTR ESS)
 install(TARGETS ${EXE_MARS} RUNTIME DESTINATION bin)
 
+# Earth namelist optimized test
+set(EXE_EARTH_OPT earthtest_opt)
+add_executable(${EXE_EARTH_OPT} TEST/test_earth_namelist_opt.f90)
+target_link_libraries(${EXE_EARTH_OPT} TWOSTR_OPT ESS_OPT)
+install(TARGETS ${EXE_EARTH_OPT} RUNTIME DESTINATION bin)
+
 
 #====================================================
 # Add test
@@ -200,3 +206,15 @@ add_test(
   COMMAND numdiff -S -r 1e-12 ${CMAKE_SOURCE_DIR}/TEST/expected_test_results.dat test_earth_namelist_output.dat 
 )
 set_tests_properties("earth output" PROPERTIES LABELS "test;earth;compare")
+
+add_test(
+  NAME "earth namelist optimized"
+  COMMAND $<TARGET_FILE:${EXE_EARTH_OPT}>
+)
+set_tests_properties("earth namelist optimized" PROPERTIES LABELS "test;earth;opt")
+
+add_test(
+  NAME "earth optimized output"
+  COMMAND numdiff -S -r 1e-12 ${CMAKE_SOURCE_DIR}/TEST/expected_test_results.dat test_earth_namelist_opt_output.dat 
+)
+set_tests_properties("earth optimized output" PROPERTIES LABELS "test;earth;opt;compare")
