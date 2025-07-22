@@ -466,8 +466,13 @@ subroutine SS_Integral_I_DN_RPS &
       Attenuationsn = Attenuations(nut)
       suntaun = suntau(nut)
       do n = nut, 1, -1
-         Attenuationsn1 = Attenuations(n-1)
-         suntaun1 = suntau(n-1)
+         if (n > 1) then 
+            Attenuationsn1 = Attenuations(n-1)
+            suntaun1 = suntau(n-1)
+         else
+            Attenuationsn1 = Attenuations(0)
+            suntaun1 = zero
+         endif
          if ( Mu1(v) .gt. zero ) then
             lostau = deltaus(n) / Mu1v
             if ( lostau .lt. cutoff ) then
